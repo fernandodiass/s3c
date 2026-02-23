@@ -1,10 +1,8 @@
 export default async function handler(request, response) {
-    // Definimos nomes claros: crypto e timestamp
+    // Definimos que os nomes aceites são crypto e timestamp
     const { crypto, timestamp } = request.query;
-    
     const API_KEY = process.env.CRYPTO_API_KEY; 
     
-    // Usamos os mesmos nomes na URL da API externa
     const url = `https://min-api.cryptocompare.com/data/v2/histohour?fsym=${crypto}&tsym=BRL&limit=1&toTs=${timestamp}&api_key=${API_KEY}`;
 
     try {
@@ -12,6 +10,6 @@ export default async function handler(request, response) {
         const data = await res.json();
         return response.status(200).json(data);
     } catch (error) {
-        return response.status(500).json({ error: "Erro na API externa" });
+        return response.status(500).json({ error: "Falha na API" });
     }
 }
