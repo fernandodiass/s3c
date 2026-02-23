@@ -63,8 +63,6 @@ form.addEventListener("submit", async (e) => {
     }
 });
 
-// ... (Mantenha suas funções atualizarTabela, exportToExcel, exportToPDF e mostrarNotificacao iguais)
-
 function atualizarTabela() {
     tbody.innerHTML = registros.map(reg =>
         `<tr>
@@ -82,3 +80,17 @@ document.getElementById("clearButton").addEventListener("click", () => {
     atualizarTabela();
     mostrarNotificacao("Consulta limpa com sucesso.", "is-info");
 });
+
+function mostrarNotificacao(mensagem, tipo = "is-info") {
+    const notification = document.createElement("div");
+    notification.className = `notification ${tipo}`;
+    notification.innerHTML = `
+        <button class="delete"></button>
+        ${mensagem}
+    `;
+    notification.querySelector(".delete").addEventListener("click", () => {
+        notification.remove();
+    });
+    notificationContainer.appendChild(notification);
+    setTimeout(() => { if(notification) notification.remove(); }, 5000);
+}
