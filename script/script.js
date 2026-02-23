@@ -10,7 +10,6 @@ form.addEventListener("submit", async (e) => {
     const date = document.getElementById("date").value;
     const time = document.getElementById("time").value;
 
-    // Validação de campos vazios
     if (!crypto || !date || !time) {
         mostrarNotificacao("Preencha todos os campos.", "is-warning");
         return;
@@ -19,7 +18,6 @@ form.addEventListener("submit", async (e) => {
     const dateTime = new Date(`${date}T${time}:00`);
     const agora = new Date();
 
-    // Impede datas futuras (importante para evitar erro da API)
     if (dateTime > agora) {
         mostrarNotificacao("Ainda não posso viajar no futuro.", "is-warning");
         return;
@@ -28,8 +26,7 @@ form.addEventListener("submit", async (e) => {
     const timestamp = Math.floor(dateTime.getTime() / 1000);
 
     try {
-        // Chamada para a sua função Serverless na Vercel
-        // Certifique-se de que o arquivo na pasta api se chama cotacao.js
+        // CORREÇÃO: Usando 'crypto' e 'timestamp' para bater com o backend
         const response = await fetch(`/api/cotacao?crypto=${crypto}&timestamp=${timestamp}`);
         
         if (!response.ok) {
@@ -44,8 +41,8 @@ form.addEventListener("submit", async (e) => {
             return;
         }
 
-        // Pega o dado mais próximo do horário solicitado
-        const candle = candles.find(c => c.time <= timestamp) || candles[candles.length - 1];
+        // Pega o candle mais próximo do horário solicitado
+        const candle = candles.find(c => c.time <= timestamp) || candles[0];
 
         const valor = candle.close.toLocaleString('pt-BR', {
             style: 'currency',
@@ -65,7 +62,7 @@ form.addEventListener("submit", async (e) => {
 
     } catch (error) {
         console.error("Erro detalhado:", error);
-        mostrarNotificacao("Erro ao buscar dados. Verifique o link da Vercel.", "is-danger");
+        mostrarNotificacao("Erro ao buscar dados. Verifique se o arquivo api/cotacao.js existe.", "is-danger");
     }
 });
 
@@ -78,7 +75,6 @@ function atualizarTabela() {
             <td>${reg.value}</td>
         </tr>`).join('');
 
-    // Mostra a tabela apenas se houver registros
     document.querySelector(".table-container").style.display = registros.length > 0 ? "block" : "none";
 }
 
@@ -96,7 +92,6 @@ function mostrarNotificacao(mensagem, tipo = "is-info") {
 
     notificationContainer.appendChild(notification);
 
-    // Auto-remove a notificação após 5 segundos
     setTimeout(() => {
         if (notification.parentNode) {
             notification.remove();
@@ -111,7 +106,6 @@ function exportToExcel() {
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Cotações");
     XLSX.writeFile(workbook, "cotacoes.xlsx");
-    mostrarNotificacao("Arquivo Excel exportado!", "is-success");
 }
 
 function exportToPDF() {
@@ -125,7 +119,6 @@ function exportToPDF() {
         y += 10;
     });
     doc.save("cotacoes.pdf");
-    mostrarNotificacao("Arquivo PDF exportado!", "is-success");
 }
 
 document.getElementById("clearButton").addEventListener("click", () => {
