@@ -1,7 +1,6 @@
 export default async function handler(request, response) {
-    // Definimos que os nomes aceites são crypto e timestamp
-    const { crypto, timestamp } = request.query;
-    const API_KEY = process.env.CRYPTO_API_KEY; 
+    const { crypto, timestamp } = request.query;    
+    const API_KEY = process.env.CRYPTO_API_KEY;
     
     const url = `https://min-api.cryptocompare.com/data/v2/histohour?fsym=${crypto}&tsym=BRL&limit=1&toTs=${timestamp}&api_key=${API_KEY}`;
 

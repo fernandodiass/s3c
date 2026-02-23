@@ -26,8 +26,8 @@ form.addEventListener("submit", async (e) => {
     const timestamp = Math.floor(dateTime.getTime() / 1000);
 
     try {
-        // CORREÇÃO: Usando 'crypto' e 'timestamp' para bater com o backend
-        const response = await fetch(`api/cotacao?crypto=${crypto}&timestamp=${timestamp}`);
+        
+        const response = await fetch(`/api/cotacao?crypto=${crypto}&timestamp=${timestamp}`);
         
         if (!response.ok) {
             throw new Error(`Erro HTTP: ${response.status}`);
