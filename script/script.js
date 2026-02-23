@@ -26,8 +26,7 @@ form.addEventListener("submit", async (e) => {
     const timestamp = Math.floor(dateTime.getTime() / 1000);
 
     try {
-        // MUDANÇA AQUI: Agora chamamos nossa própria API interna
-        // Passamos apenas os parâmetros necessários, a chave fica guardada no servidor.
+        
         const response = await fetch(`/api/cotacao?crypto=${crypto}&timestamp=${timestamp}`);
         
         if (!response.ok) throw new Error("Erro na resposta do servidor");
