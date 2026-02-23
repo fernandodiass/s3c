@@ -1,0 +1,88 @@
+body {
+    background-color: #fff8fd;
+}
+
+.color1 {
+    color: #5affc7;
+}
+
+.color2 {
+    color: #e0ff8d;
+}
+
+.color3 {
+    color: #6033c6;
+}
+
+.color4 {
+    color: #ed64d8;
+}
+
+.color5 {
+    color: #ffb6e8;
+}
+
+.custom-header {
+    background-color: #6033c6;
+    color: #e0ff8d;
+}
+
+.custom-button {
+    background-color: #ed64d8;
+    color: #fff;
+    border: none;
+}
+
+.custom-button:hover {
+    background-color: #5affc7;
+    color: #6033c6;
+}
+
+.custom-table thead {
+    background-color: #e0ff8d;
+    color: #e0ff8d;
+
+}
+
+.custom-table tbody tr:nth-child(even) {
+    background-color: #ffb6e8;
+}
+
+.custom-table tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+.box {
+    box-shadow: 0 2px 5px rgba(96, 51, 198, 0.2);
+}
+
+.label {
+    font-weight: bold;
+    color: #6033c6;
+}
+
+h1.title {
+    color: #6033c6;
+    padding-bottom: 0.3em;
+    margin-bottom: 1em;
+}
+
+.button.is-success {
+    background-color: #5affc7;
+    color: #6033c6;
+}
+
+.button.is-primary {
+    background-color: #5daff3;
+    color: #6033c6;
+}
+
+.button.is-danger {
+    background-color: #ed64d8;
+    color: #fff;
+}
+
+.button.is-success:hover,
+.button.is-danger:hover {
+    opacity: 0.85;
+}

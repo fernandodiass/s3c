@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Consulta de Cotação por Hora</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/1.0.3/css/bulma.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+
+    <main class="section">
+
+        <nav class="navbar is-fixed-top has-background-black-ter" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="#">
+                    <img src="img/logo.png" alt="Logo">
+                </a>
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+            <div class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item">Home</a>
+                    <a class="navbar-item">Sobre</a>
+                    <a class="navbar-item">Contato</a>
+                </div>
+            </div>
+        </nav><br><br>
+
+        <div class="container">
+            <p class="has-text-link is-size-4">Consulta de Cotação de Criptomoedas</p><br>
+
+            <div id="notificationContainer" class="container mt-3"></div><br>
+
+            <form id="quoteForm" class="box has-background-black-ter">
+                <div class="columns is-multiline">
+                    <div class="column is-4">
+                        <div class="field">
+                            <label class="label">Código</label>
+                            <div class="control">
+                                <input type="text" id="crypto" class="input" data-theme="link" placeholder="ex: BTC">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column is-4">
+                        <div class="field">
+                            <label class="label">Data</label>
+                            <div class="control">
+                                <input type="date" id="date" class="input" data-theme="link">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column is-4">
+                        <div class="field">
+                            <label class="label">Horário</label>
+                            <div class="control">
+                                <input type="time" id="time" class="input" data-theme="link">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field mt-4">
+                    <div class="control">
+                        <button type="submit" class="button is-link">Consultar</button>
+                    </div>
+                </div>
+            </form><br><br>
+
+            <div id="tableContainer" class="table-container" style="display: none;">
+                <table class="table is-fullwidth is-hoverable custom-table">
+                    <thead>
+                        <tr>
+                            <th class="has-text-link">Cripto</th>
+                            <th class="has-text-link">Data</th>
+                            <th class="has-text-link">Horário</th>
+                            <th class="has-text-link">Valor em reais (BRL)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultTableBody">
+                        <!-- Resultados inseridos aqui -->
+                    </tbody>
+                </table>
+                <div class="buttons mt-4">
+                    <button class="button is-primary is-small" onclick="exportToExcel()">Exportar XLS</button>
+                    <button class="button is-danger is-small" onclick="exportToPDF()">Exportar PDF</button>
+                    <button id="clearButton" class="button is-warning is-small">Limpar Consulta</button>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer class="footer" style="padding: 10px 0px 10px;">
+        <div class="content has-text-centered">
+            <p><strong>S3C</strong> - Todos os Direitos Reservados - 2025</p>
+            <p><a href="#">Termos de uso</a> | <a href="#">Política de privacidade</a></p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="script/script.js"></script>
+</body>
+
+</html>

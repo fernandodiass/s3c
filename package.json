@@ -1,0 +1,13 @@
+{
+  "name": "busca-cotacoes-cripto",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "npx servor --reload"
+  },
+  "dependencies": {
+    "dotenv": "^17.3.1"
+  },
+  "devDependencies": {
+    "servor": "^4.0.0"
+  }
+}
