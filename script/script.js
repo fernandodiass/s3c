@@ -1,55 +1,85 @@
-document.getElementById('quoteForm').addEventListener('submit', async (e) => {
+const form = document.getElementById("quoteForm");
+const tbody = document.getElementById("resultTableBody");
+const notificationContainer = document.getElementById("notificationContainer");
+let registros = [];
+
+form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const crypto = document.getElementById('crypto').value.toUpperCase();
-    const date = document.getElementById('date').value;
-    const time = document.getElementById('time').value;
+    const crypto = document.getElementById("crypto").value.trim().toUpperCase();
+    const date = document.getElementById("date").value;
+    const time = document.getElementById("time").value;
 
     if (!crypto || !date || !time) {
-        alert("Por favor, preencha todos os campos.");
+        mostrarNotificacao("Preencha todos os campos.", "is-warning");
         return;
     }
 
-    // CONVERSÃO DE DATA PARA TIMESTAMP (Exigido pela API para histórico)
-    const dateTime = new Date(`${date}T${time}`);
+    const dateTime = new Date(`${date}T${time}:00`);
+    const agora = new Date();
+
+    if (dateTime > agora) {
+        mostrarNotificacao("Ainda não posso viajar no futuro.", "is-warning");
+        return;
+    }
+
     const timestamp = Math.floor(dateTime.getTime() / 1000);
 
     try {
-        // EM VEZ DE: https://min-api.cryptocompare.com/...
-        // NÓS CHAMAMOS: Nossa própria rota interna que esconde a chave
-        const response = await fetch(`/api/cotacao?coin=${crypto}&ts=${timestamp}`);
-        const data = await response.json();
+        // MUDANÇA AQUI: Agora chamamos nossa própria API interna
+        // Passamos apenas os parâmetros necessários, a chave fica guardada no servidor.
+        const response = await fetch(`/api/cotacao?crypto=${crypto}&timestamp=${timestamp}`);
+        
+        if (!response.ok) throw new Error("Erro na resposta do servidor");
 
-        if (data[crypto]) {
-            exibirResultado(crypto, date, time, data[crypto].BRL);
-        } else {
-            alert("Moeda não encontrada ou erro na API.");
+        const result = await response.json();
+        const candles = result?.Data?.Data;
+
+        if (!candles || candles.length === 0) {
+            mostrarNotificacao("Dados não encontrados para esta consulta.", "is-danger");
+            return;
         }
+
+        const candle = candles.find(c => c.time <= timestamp) || candles[0];
+
+        const valor = candle.close.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        });
+
+        const registro = {
+            code: crypto,
+            date: dateTime.toLocaleDateString("pt-BR"),
+            time: dateTime.toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' }),
+            value: valor
+        };
+
+        registros.push(registro);
+        atualizarTabela();
+        mostrarNotificacao("Cotação adicionada com sucesso!", "is-success");
+
     } catch (error) {
-        console.error("Erro ao buscar dados:", error);
+        console.error("Erro:", error);
+        mostrarNotificacao("Erro ao buscar dados. Verifique se o servidor local está rodando.", "is-danger");
     }
 });
 
-function exibirResultado(coin, date, time, price) {
-    const tableContainer = document.getElementById('tableContainer');
-    const tbody = document.getElementById('resultTableBody');
-    
-    tableContainer.style.display = 'block';
-    
-    const row = `
-        <tr>
-            <td>${coin}</td>
-            <td>${date}</td>
-            <td>${time}</td>
-            <td>R$ ${price.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td>
-        </tr>
-    `;
-    tbody.innerHTML += row;
+// ... (Mantenha suas funções atualizarTabela, exportToExcel, exportToPDF e mostrarNotificacao iguais)
+
+function atualizarTabela() {
+    tbody.innerHTML = registros.map(reg =>
+        `<tr>
+            <td>${reg.code}</td>
+            <td>${reg.date}</td>
+            <td>${reg.time}</td>
+            <td>${reg.value}</td>
+        </tr>`).join('');
+
+    document.querySelector(".table-container").style.display = registros.length > 0 ? "block" : "none";
 }
 
-// Lógica do botão limpar
-document.getElementById('clearButton').addEventListener('click', () => {
-    document.getElementById('resultTableBody').innerHTML = '';
-    document.getElementById('tableContainer').style.display = 'none';
-    document.getElementById('quoteForm').reset();
+document.getElementById("clearButton").addEventListener("click", () => {
+    registros = [];
+    atualizarTabela();
+    mostrarNotificacao("Consulta limpa com sucesso.", "is-info");
 });
