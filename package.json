@@ -1,17 +1,14 @@
 {
   "name": "busca-cotacoes-cripto",
   "version": "1.0.0",
-  "main": "index.html",
+  "type": "module",
   "scripts": {
-    "start": "npx servor --reload",
-    "dev": "vercel dev"
+    "start": "npx servor --reload"
   },
   "dependencies": {
-    "dotenv": "^17.3.1",
-    "node-fetch": "^3.3.2"
+    "dotenv": "^17.3.1"
   },
   "devDependencies": {
-    "servor": "^4.0.0",
-    "vercel": "^32.0.0"
+    "servor": "^4.0.0"
   }
 }
